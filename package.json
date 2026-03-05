@@ -10,7 +10,7 @@
     "dev": "tsc --watch"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "1.5.0",
+    "@modelcontextprotocol/sdk": "^1.27.1",
     "openai": "^4.77.0",
     "pg": "^8.13.3",
     "zod": "^3.24.1"
