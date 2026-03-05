@@ -4,6 +4,8 @@ A local MCP memory server — one brain for all your AI tools.
 
 Drop a thought from Claude Desktop, Cursor, or any MCP client. It gets auto-categorized and embedded. Any agent can retrieve it later via semantic search.
 
+This is a concept posted by Nate B Jones https://www.youtube.com/watch?v=2JiMmye2ezg
+
 ## Setup
 
 **Requirements:** Docker Desktop, Node.js 20+, an OpenAI API key.
