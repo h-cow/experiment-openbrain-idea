@@ -31,7 +31,6 @@ export async function migrate(): Promise<void> {
         ON thoughts (created_at DESC)
     `);
 
-    console.error("Database migration complete.");
   } finally {
     client.release();
   }
