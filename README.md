@@ -1,8 +1,8 @@
 # OpenBrain
 
-A local MCP memory server — one brain for all your AI tools.
+A local memory CLI — save thoughts, search them semantically, keep one brain across everything.
 
-Drop a thought from Claude Desktop, Cursor, or any MCP client. It gets auto-categorized and embedded. Any agent can retrieve it later via semantic search.
+Drop a thought from the terminal. It gets auto-categorized and embedded. Retrieve anything later via semantic search.
 
 This is a concept posted by Nate B Jones https://www.youtube.com/watch?v=2JiMmye2ezg
 
@@ -33,37 +33,25 @@ node dist/index.js
 
 The server auto-migrates the schema on first run.
 
-## Claude Desktop integration
+## CLI
 
-Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+Install globally then use from anywhere:
 
-```json
-{
-  "mcpServers": {
-    "openbrain": {
-      "command": "node",
-      "args": ["/absolute/path/to/openBrain/dist/index.js"],
-      "env": {
-        "DATABASE_URL": "postgres://openbrain:openbrain@localhost:5432/openbrain",
-        "OPENAI_API_KEY": "sk-..."
-      }
-    }
-  }
-}
+```bash
+npm run build
+npm link
 ```
 
-Restart Claude Desktop.
+```
+openbrain add  | a   <text>      Save a thought (auto-categorized)
+openbrain search | s <query>     Semantic search
+openbrain cat  | c   <category>  List thoughts in a category
+openbrain recent | r             List recent thoughts
+openbrain stats  | st            Show statistics
+openbrain delete | d <id>        Delete a thought by ID
+```
 
-## Tools
-
-| Tool | Description |
-|------|-------------|
-| `add_thought` | Save a note. Auto-categorizes and embeds. |
-| `search` | Semantic search across all thoughts. |
-| `list_recent` | Most recent thoughts, newest first. |
-| `list_by_category` | Paginated list within a category. |
-| `get_stats` | Counts by category, top tags, recent activity. |
-| `delete_thought` | Hard delete by ID. |
+Or run without linking: `npm run cli -- <command> [args]`
 
 ## Categories
 

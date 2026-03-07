@@ -3,14 +3,16 @@
   "version": "0.1.0",
   "description": "Local MCP memory server — one brain for all your AI tools",
   "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/cli.js",
+  "bin": {
+    "openbrain": "dist/cli.js"
+  },
   "scripts": {
     "build": "tsc",
-    "start": "node --env-file=.env dist/index.js",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "cli": "node --env-file=.env dist/cli.js"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.27.1",
     "openai": "^4.77.0",
     "pg": "^8.13.3",
     "zod": "^3.24.1"
