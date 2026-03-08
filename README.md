@@ -48,7 +48,7 @@ openbrain search | s <query>     Semantic search
 openbrain cat  | c   <category>  List thoughts in a category
 openbrain recent | r             List recent thoughts
 openbrain stats  | st            Show statistics
-openbrain delete | d <id>        Delete a thought by ID
+openbrain delete | d <id> [id...]  Delete one or more thoughts by ID (e.g. d 3 7 12)
 ```
 
 Or run without linking: `npm run cli -- <command> [args]`

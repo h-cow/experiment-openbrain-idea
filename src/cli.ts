@@ -17,7 +17,7 @@ Commands:
   cat  | c   <category>  List thoughts in a category
   recent | r             List recent thoughts
   stats  | st            Show statistics
-  delete | d <id>        Delete a thought by ID
+  delete | d <id> [id]  Delete one or more thoughts by ID
 `.trim();
 
 function result<T>(tool: { content: Array<{ text: string }> }): T {
@@ -125,13 +125,13 @@ async function run() {
 
     case "delete":
     case "d": {
-      const id = parseInt(text, 10);
-      if (!id || isNaN(id)) { console.error("Usage: openbrain delete <id>"); process.exit(1); }
-      const out = result<{ message?: string; error?: string }>(
-        await deleteThoughtTool.handler({ id })
+      const ids = rest.map((s) => parseInt(s, 10));
+      if (!ids.length || ids.some(isNaN)) { console.error("Usage: openbrain delete <id> [id ...]"); process.exit(1); }
+      const out = result<{ message?: string; deleted?: number; error?: string }>(
+        await deleteThoughtTool.handler({ ids })
       );
       if (out.error) { console.error(out.error); process.exit(1); }
-      console.log(`Deleted #${id}`);
+      console.log(out.message);
       break;
     }
 

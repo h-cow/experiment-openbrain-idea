@@ -2,7 +2,7 @@ import { z } from "zod";
 import { pool } from "../db/client.js";
 
 const schema = {
-  id: z.number().int().positive().describe("The ID of the thought to delete"),
+  ids: z.array(z.number().int().positive()).min(1).describe("One or more thought IDs to delete"),
 };
 
 type Input = z.infer<z.ZodObject<typeof schema>>;
@@ -10,12 +10,13 @@ type Input = z.infer<z.ZodObject<typeof schema>>;
 export const deleteThoughtTool = {
   name: "delete_thought",
   description:
-    "Permanently delete a thought by its ID. Returns an error if the ID does not exist.",
+    "Permanently delete one or more thoughts by their IDs. Returns an error for any IDs that do not exist.",
   schema,
-  handler: async ({ id }: Input) => {
+  handler: async ({ ids }: Input) => {
+    const placeholders = ids.map((_, i) => `$${i + 1}`).join(", ");
     const { rowCount } = await pool.query(
-      `DELETE FROM thoughts WHERE id = $1`,
-      [id]
+      `DELETE FROM thoughts WHERE id = ANY(ARRAY[${placeholders}]::int[])`,
+      ids
     );
 
     if (!rowCount) {
@@ -24,7 +25,7 @@ export const deleteThoughtTool = {
           {
             type: "text" as const,
             text: JSON.stringify({
-              error: `No thought found with id ${id}.`,
+              error: `No thoughts found with ids ${ids.join(", ")}.`,
             }),
           },
         ],
@@ -35,7 +36,7 @@ export const deleteThoughtTool = {
       content: [
         {
           type: "text" as const,
-          text: JSON.stringify({ message: "Thought deleted." }),
+          text: JSON.stringify({ message: `Deleted ${rowCount} thought(s).`, deleted: rowCount }),
         },
       ],
     };
