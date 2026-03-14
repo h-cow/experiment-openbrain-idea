@@ -63,6 +63,7 @@ export const searchTool = {
          1 - (embedding <=> $1::vector) AS similarity
        FROM thoughts
        WHERE embedding IS NOT NULL
+       AND deleted_at IS NULL
        ${categoryFilter}
        ORDER BY embedding <=> $1::vector
        LIMIT $2`,

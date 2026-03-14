@@ -35,24 +35,28 @@ export const getStatsTool = {
       topTagsResult,
       activeDayResult,
     ] = await Promise.all([
-      pool.query<TotalRow>(`SELECT COUNT(*) AS total FROM thoughts`),
+      pool.query<TotalRow>(`SELECT COUNT(*) AS total FROM thoughts WHERE deleted_at IS NULL`),
       pool.query<CategoryCountRow>(
         `SELECT category, COUNT(*) AS count
          FROM thoughts
+         WHERE deleted_at IS NULL
          GROUP BY category
          ORDER BY count DESC`
       ),
       pool.query<RecentRow>(
         `SELECT COUNT(*) AS count FROM thoughts
-         WHERE created_at >= NOW() - INTERVAL '7 days'`
+         WHERE deleted_at IS NULL
+           AND created_at >= NOW() - INTERVAL '7 days'`
       ),
       pool.query<RecentRow>(
         `SELECT COUNT(*) AS count FROM thoughts
-         WHERE created_at >= NOW() - INTERVAL '30 days'`
+         WHERE deleted_at IS NULL
+           AND created_at >= NOW() - INTERVAL '30 days'`
       ),
       pool.query<TagRow>(
         `SELECT tag, COUNT(*) AS count
          FROM thoughts, unnest(tags) AS tag
+         WHERE deleted_at IS NULL
          GROUP BY tag
          ORDER BY count DESC
          LIMIT 10`
@@ -60,6 +64,7 @@ export const getStatsTool = {
       pool.query<ActiveDayRow>(
         `SELECT DATE(created_at) AS day
          FROM thoughts
+         WHERE deleted_at IS NULL
          GROUP BY day
          ORDER BY COUNT(*) DESC
          LIMIT 1`

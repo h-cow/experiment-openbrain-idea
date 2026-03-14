@@ -31,13 +31,14 @@ export const listRecentTool = {
   description: "List your most recently saved thoughts, newest first.",
   schema,
   handler: async ({ limit, category }: Input) => {
-    const categoryFilter = category ? "WHERE category = $2" : "";
+    const categoryFilter = category ? "AND category = $2" : "";
     const params: (string | number)[] = [limit];
     if (category) params.push(category);
 
     const { rows } = await pool.query<ThoughtRow>(
       `SELECT id, text, category, tags, created_at
        FROM thoughts
+       WHERE deleted_at IS NULL
        ${categoryFilter}
        ORDER BY created_at DESC
        LIMIT $1`,
