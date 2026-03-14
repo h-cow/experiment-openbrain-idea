@@ -17,7 +17,7 @@ Commands:
   cat  | c   <category>  List thoughts in a category
   recent | r             List recent thoughts
   stats  | st            Show statistics
-  delete | d <id> [id]  Delete one or more thoughts by ID
+  delete | d <id> [id...]  Delete one or more thoughts by ID (e.g. d 3 7 12)
 `.trim();
 
 function result<T>(tool: { content: Array<{ text: string }> }): T {
